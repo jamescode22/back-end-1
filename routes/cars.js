@@ -44,13 +44,14 @@ router.put("/:carsId", (req, res) => {
 
   if (!make || !model || !carsId) return res.status(400).send("missing data");
 
-  // loop through cars and update the record when found
-  cars.forEach((car) => {
-    if (car.id === Number(carsId)) {
-      car.make = make;
-      car.model = model;
-    }
-  });
+  // get the index of this car
+  const _carIndex = cars.findIndex((car) => car.id === Number(carsId));
+
+  if (_carIndex === -1) return res.sendStatus(404);
+
+  // do the update
+  cars[_carIndex].make = make;
+  cars[_carIndex].model = model;
   return res.sendStatus(201);
 });
 
